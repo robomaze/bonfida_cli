@@ -1,5 +1,7 @@
 # Bonfida API Client
 
+[![Coverage Status](https://coveralls.io/repos/github/robomaze/bonfida_cli/badge.svg)](https://coveralls.io/github/robomaze/bonfida_cli) ![Go](https://github.com/robomaze/bonfida_cli/actions/workflows/ci.yml/badge.svg)
+
 Provides a client library written in Golang to interact with Bonfida API https://docs.bonfida.com/#introduction
 
 Note that this is still work in progress.
