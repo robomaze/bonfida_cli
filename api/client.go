@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 
 	"github.com/pkg/errors"
@@ -52,9 +51,7 @@ func (c *Client) NewVolumesService() *VolumesService {
 }
 
 func (c *Client) callAPI(ctx context.Context, r *request) (bonfidaResponse *common.BonfidaResponse, err error) {
-	r.compile()
-
-	req, err := http.NewRequest(r.method, r.fullURL, r.body)
+	req, err := http.NewRequest(r.method, r.getFullUrl(), r.body)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to create request object")
 	}
@@ -99,28 +96,13 @@ func (c *Client) callAPI(ctx context.Context, r *request) (bonfidaResponse *comm
 
 // request defines an API request
 type request struct {
+	apiUrl   string
 	method   string
 	endpoint string
-	query    url.Values
 	header   http.Header
 	body     io.Reader
-	fullURL  string
 }
 
-func (r *request) compile() {
-	r.fullURL = r.endpoint
-
-	q := r.query.Encode()
-	if q != "" {
-		r.fullURL = fmt.Sprintf("%s?%s", r.fullURL, q)
-	}
-}
-
-// setParam set param with key/value to query string
-func (r *request) setParam(key string, value interface{}) *request { // nolint: unused
-	if r.query == nil {
-		r.query = url.Values{}
-	}
-	r.query.Set(key, fmt.Sprintf("%v", value))
-	return r
+func (r *request) getFullUrl() string {
+	return fmt.Sprintf("%s/%s", r.apiUrl, r.endpoint)
 }

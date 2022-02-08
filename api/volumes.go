@@ -28,8 +28,9 @@ func (s *VolumesService) Do(ctx context.Context) ([]*Volume, error) {
 	}
 
 	r := &request{
+		apiUrl:   s.c.BaseURL,
 		method:   http.MethodGet,
-		endpoint: fmt.Sprintf("%s/volumes/%s", s.c.BaseURL, s.marketName),
+		endpoint: fmt.Sprintf("volumes/%s", s.marketName),
 	}
 
 	bonfidaResponse, err := s.c.callAPI(ctx, r)

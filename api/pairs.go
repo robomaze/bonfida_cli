@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -15,8 +14,9 @@ type PairsService struct {
 
 func (s *PairsService) Do(ctx context.Context) ([]string, error) {
 	r := &request{
+		apiUrl:   s.c.BaseURL,
 		method:   http.MethodGet,
-		endpoint: fmt.Sprintf("%s/pairs", s.c.BaseURL),
+		endpoint: "pairs",
 	}
 
 	bonfidaResponse, err := s.c.callAPI(ctx, r)

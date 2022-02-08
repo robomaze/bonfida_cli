@@ -29,8 +29,9 @@ func (s *OrderBookService) Do(ctx context.Context) (*OrderBook, error) {
 	}
 
 	r := &request{
+		apiUrl:   s.c.BaseURL,
 		method:   http.MethodGet,
-		endpoint: fmt.Sprintf("%s/orderbooks/%s", s.c.BaseURL, s.marketName),
+		endpoint: fmt.Sprintf("orderbooks/%s", s.marketName),
 	}
 
 	bonfidaResponse, err := s.c.callAPI(ctx, r)

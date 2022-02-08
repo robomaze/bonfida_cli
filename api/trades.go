@@ -30,6 +30,7 @@ func (s *TradesService) SetMarketAddress(address string) *TradesService {
 
 func (s *TradesService) Do(ctx context.Context) ([]*Trade, error) {
 	r := &request{
+		apiUrl:   s.c.BaseURL,
 		method:   http.MethodGet,
 		endpoint: s.getEndpoint(),
 	}
@@ -51,14 +52,14 @@ func (s *TradesService) Do(ctx context.Context) ([]*Trade, error) {
 
 func (s *TradesService) getEndpoint() string {
 	if len(s.marketName) > 0 {
-		return fmt.Sprintf("%s/trades/%s", s.c.BaseURL, s.marketName)
+		return fmt.Sprintf("trades/%s", s.marketName)
 	}
 
 	if len(s.marketAddress) > 0 {
-		return fmt.Sprintf("%s/trades/address/%s", s.c.BaseURL, s.marketAddress)
+		return fmt.Sprintf("trades/address/%s", s.marketAddress)
 	}
 
-	return fmt.Sprintf("%s/trades/all/recent", s.c.BaseURL)
+	return "trades/all/recent"
 }
 
 type Trade struct {

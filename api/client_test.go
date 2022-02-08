@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClient(t *testing.T) {
+func TestClient_NoSuchHostErr(t *testing.T) {
 	cli := &api.Client{
 		BaseURL:    "https://bad.url",
 		UserAgent:  "Bonfida/golang",
@@ -30,12 +30,7 @@ func TestClient(t *testing.T) {
 }
 
 func TestClient_RealRequest(t *testing.T) {
-	cli := &api.Client{
-		BaseURL:    api.BonfidaApiUrl,
-		UserAgent:  "Bonfida/golang",
-		HTTPClient: http.DefaultClient,
-		Logger:     log.New(os.Stderr, "bonfida_cli ", log.LstdFlags),
-	}
+	cli := api.NewClient()
 
 	service := cli.NewOrderBookService()
 	service.SetMarketName("BTC/USDT")
