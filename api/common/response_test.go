@@ -9,11 +9,15 @@ import (
 )
 
 func TestBonfidaResponse_UnmarshalJSON(t *testing.T) {
-	jsonStr := "{\n  \"success\": true,\n  \"data\": {\n    \"market\": \"ETH/USDT\",\n    \"bids\": [\n      { \"price\": 452.77, \"size\": 5 },\n      { \"price\": 452.71, \"size\": 0.5 },\n      { \"price\": 452.17, \"size\": 10 }\n    ],\n    \"asks\": [\n      { \"price\": 453.19, \"size\": 105.534 },\n      { \"price\": 453.41, \"size\": 10 },\n      { \"price\": 453.49, \"size\": 114.203 }\n    ],\n    \"marketAddress\": \"5abZGhrELnUnfM9ZUnvK6XJPoBU5eShZwfFPkdhAC7o\"\n  }\n}"
-
 	bonfidaRes := common.BonfidaResponse{}
 
+	jsonStr := "invalid json"
+
 	err := json.Unmarshal([]byte(jsonStr), &bonfidaRes)
+	assert.EqualError(t, err, "invalid character 'i' looking for beginning of value")
+
+	jsonStr = "{\n  \"success\": true,\n  \"data\": {\n    \"market\": \"ETH/USDT\",\n    \"bids\": [\n      { \"price\": 452.77, \"size\": 5 },\n      { \"price\": 452.71, \"size\": 0.5 },\n      { \"price\": 452.17, \"size\": 10 }\n    ],\n    \"asks\": [\n      { \"price\": 453.19, \"size\": 105.534 },\n      { \"price\": 453.41, \"size\": 10 },\n      { \"price\": 453.49, \"size\": 114.203 }\n    ],\n    \"marketAddress\": \"5abZGhrELnUnfM9ZUnvK6XJPoBU5eShZwfFPkdhAC7o\"\n  }\n}"
+	err = json.Unmarshal([]byte(jsonStr), &bonfidaRes)
 
 	assert.NoError(t, err)
 

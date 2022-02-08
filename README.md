@@ -38,3 +38,7 @@ func main() {
 }
 
 ```
+
+## TODO
+
+- [ ] Implement WS https://docs.bonfida.com/#websocket

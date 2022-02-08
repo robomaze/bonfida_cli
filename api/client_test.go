@@ -2,14 +2,39 @@ package api_test
 
 import (
 	"context"
+	"github.com/robomaze/bonfida_cli/api"
+	"log"
+	"net/http"
+	"os"
 	"testing"
 
-	"github.com/robomaze/bonfida_cli/api"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClient_NewOrderBookService(t *testing.T) {
-	cli := api.NewClient()
+func TestClient(t *testing.T) {
+	cli := &api.Client{
+		BaseURL:    "https://bad.url",
+		UserAgent:  "Bonfida/golang",
+		HTTPClient: http.DefaultClient,
+		Logger:     log.New(os.Stderr, "bonfida_cli ", log.LstdFlags),
+	}
+
+	service := cli.NewOrderBookService()
+	service.SetMarketName("BTC/USDT")
+
+	ctx := context.TODO()
+	_, err := service.Do(ctx)
+
+	assert.EqualError(t, err, "error getting order book: unable to talk to Bonfida: Get \"https://bad.url/orderbooks/BTCUSDT\": dial tcp: lookup bad.url: no such host")
+}
+
+func TestClient_RealRequest(t *testing.T) {
+	cli := &api.Client{
+		BaseURL:    api.BonfidaApiUrl,
+		UserAgent:  "Bonfida/golang",
+		HTTPClient: http.DefaultClient,
+		Logger:     log.New(os.Stderr, "bonfida_cli ", log.LstdFlags),
+	}
 
 	service := cli.NewOrderBookService()
 	service.SetMarketName("BTC/USDT")
