@@ -39,10 +39,6 @@ func (c *Client) NewOrderBookService() *OrderBookService {
 	return &OrderBookService{c: c}
 }
 
-func (c *Client) NewCandlesService() *CandlesService {
-	return &CandlesService{c: c}
-}
-
 func (c *Client) NewPairsService() *PairsService {
 	return &PairsService{c: c}
 }
@@ -121,7 +117,7 @@ func (r *request) compile() {
 }
 
 // setParam set param with key/value to query string
-func (r *request) setParam(key string, value interface{}) *request {
+func (r *request) setParam(key string, value interface{}) *request { // nolint: unused
 	if r.query == nil {
 		r.query = url.Values{}
 	}

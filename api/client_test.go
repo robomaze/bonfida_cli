@@ -2,11 +2,12 @@ package api_test
 
 import (
 	"context"
-	"github.com/robomaze/bonfida_cli/api"
 	"log"
 	"net/http"
 	"os"
 	"testing"
+
+	"github.com/robomaze/bonfida_cli/api"
 
 	"github.com/stretchr/testify/assert"
 )
