@@ -25,7 +25,7 @@ func TestTradesService_Do(t *testing.T) {
 	}
 
 	httpmock.RegisterResponder("GET",
-		fmt.Sprintf("%s/trades/all/recent", api.BonfidaApiUrl),
+		fmt.Sprintf("%s/data/all/recent", api.BonfidaApiUrl),
 		httpmock.NewStringResponder(500, "{}"))
 
 	service := cli.NewTradesService()
@@ -33,10 +33,10 @@ func TestTradesService_Do(t *testing.T) {
 	ctx := context.TODO()
 	_, err := service.Do(ctx)
 
-	assert.EqualError(t, err, "error getting trades: status 500 at https://serum-api.bonfida.com/trades/all/recent: Bonfida API error")
+	assert.EqualError(t, err, "error getting data: status 500 at https://serum-api.bonfida.com/data/all/recent: Bonfida API error")
 
 	httpmock.RegisterResponder("GET",
-		fmt.Sprintf("%s/trades/ETHUSDT", api.BonfidaApiUrl),
+		fmt.Sprintf("%s/data/ETHUSDT", api.BonfidaApiUrl),
 		httpmock.NewStringResponder(200, "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"market\": \"ETH/USDT\",\n      \"price\": 451.51,\n      \"size\": 0.5,\n      \"side\": \"buy\",\n      \"time\": 1604767562476.2188,\n      \"orderId\": \"833220983065386731245551\",\n      \"feeCost\": 0.225755,\n      \"marketAddress\": \"5abZGhrELnUnfM9ZUnvK6XJPoBU5eShZwfFPkdhAC7o\"\n    }\n  ]\n}\n"))
 
 	service.SetMarketName("ETH/USDT")
@@ -54,7 +54,7 @@ func TestTradesService_Do(t *testing.T) {
 	assert.Equal(t, "833220983065386731245551", res[0].OrderId)
 
 	httpmock.RegisterResponder("GET",
-		fmt.Sprintf("%s/trades/address/7dLVkUfBVfCGkFhSXDCq1ukM9usathSgS716t643iFGF", api.BonfidaApiUrl),
+		fmt.Sprintf("%s/data/address/7dLVkUfBVfCGkFhSXDCq1ukM9usathSgS716t643iFGF", api.BonfidaApiUrl),
 		httpmock.NewStringResponder(200, "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"market\": \"ETH/USDT\",\n      \"price\": 451.51,\n      \"size\": 0.5,\n      \"side\": \"buy\",\n      \"time\": 1604767562476.2188,\n      \"orderId\": \"833220983065386731245551\",\n      \"feeCost\": 0.225755,\n      \"marketAddress\": \"5abZGhrELnUnfM9ZUnvK6XJPoBU5eShZwfFPkdhAC7o\"\n    }\n  ]\n}\n"))
 
 	service.SetMarketName("")
@@ -66,7 +66,7 @@ func TestTradesService_Do(t *testing.T) {
 	assert.Equal(t, "ETH/USDT", res[0].Market)
 
 	httpmock.RegisterResponder("GET",
-		fmt.Sprintf("%s/trades/all/recent", api.BonfidaApiUrl),
+		fmt.Sprintf("%s/data/all/recent", api.BonfidaApiUrl),
 		httpmock.NewStringResponder(200, "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"market\": \"ETH/USDT\",\n      \"price\": 451.51,\n      \"size\": 0.5,\n      \"side\": \"buy\",\n      \"time\": 1604767562476.2188,\n      \"orderId\": \"833220983065386731245551\",\n      \"feeCost\": 0.225755,\n      \"marketAddress\": \"5abZGhrELnUnfM9ZUnvK6XJPoBU5eShZwfFPkdhAC7o\"\n    }\n  ]\n}\n"))
 
 	service.SetMarketName("")

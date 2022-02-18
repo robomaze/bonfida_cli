@@ -37,7 +37,7 @@ func (s *TradesService) Do(ctx context.Context) ([]*Trade, error) {
 
 	bonfidaResponse, err := s.c.callAPI(ctx, r)
 	if err != nil {
-		return nil, errors.Wrap(err, "error getting trades")
+		return nil, errors.Wrap(err, "error getting data")
 	}
 
 	var trades []*Trade
@@ -52,14 +52,14 @@ func (s *TradesService) Do(ctx context.Context) ([]*Trade, error) {
 
 func (s *TradesService) getEndpoint() string {
 	if len(s.marketName) > 0 {
-		return fmt.Sprintf("trades/%s", s.marketName)
+		return fmt.Sprintf("data/%s", s.marketName)
 	}
 
 	if len(s.marketAddress) > 0 {
-		return fmt.Sprintf("trades/address/%s", s.marketAddress)
+		return fmt.Sprintf("data/address/%s", s.marketAddress)
 	}
 
-	return "trades/all/recent"
+	return "data/all/recent"
 }
 
 type Trade struct {

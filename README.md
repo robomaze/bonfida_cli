@@ -12,6 +12,7 @@ Note that this is still work in progress.
 
 ## Usage
 
+### REST API
 ```go
 package main
 
@@ -41,6 +42,49 @@ func main() {
 
 ```
 
+### WS
+
+```go
+package main
+
+import (
+	"log"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/robomaze/bonfida_cli/api"
+)
+
+func main() {
+	logger := log.New(os.Stderr, "bonfida_cli ", log.LstdFlags)
+	cli := api.WSClient{
+		HTTPClient: http.DefaultClient,
+		Logger:     logger,
+		OnError: func(err error, msg string) {
+			// Do stuff when things go feral.
+		},
+		OnData: func(trade *api.Trade) {
+			// Do what you need to do when a trade happens.
+			log.Printf("\ntrade %+v", *trade)
+		},
+	}
+
+	err := cli.Subscribe()
+	if err != nil {
+		// Deal with error during the subscription process.
+    }
+
+	// Only to wait for some trades to appear in logs.
+	time.Sleep(time.Second * 60)
+
+	// Properly close the connection when done receiving trades.
+	cli.Close()
+}
+
+```
+
 ## TODO
 
-- [ ] Implement WS https://docs.bonfida.com/#websocket
+- [ ] Expand documentation
+- [ ] Increase test coverage over 90%

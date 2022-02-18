@@ -18,6 +18,7 @@ const BonfidaApiUrl = "https://serum-api.bonfida.com"
 
 var errBonfidaAPI = errors.New("Bonfida API error")
 
+// NewClient will instantiate a ready to use Bonfida API Client.
 func NewClient() *Client {
 	return &Client{
 		BaseURL:    BonfidaApiUrl,
